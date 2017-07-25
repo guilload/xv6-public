@@ -46,6 +46,11 @@ trap(struct trapframe *tf)
     return;
   }
 
+  if(tf->trapno == T_PGFLT) {
+    growproc(rcr2()); // FIXME: error checking?
+    return;
+  }
+
   switch(tf->trapno){
   case T_IRQ0 + IRQ_TIMER:
     if(cpunum() == 0){

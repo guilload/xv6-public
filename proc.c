@@ -114,11 +114,19 @@ userinit(void)
   release(&ptable.lock);
 }
 
-// Grow current process's memory by n bytes.
+// Grow current process's memory by PGSIZE bytes after a page fault
+// occurring at `address`.
 // Return 0 on success, -1 on failure.
 int
-growproc(int n)
+growproc(uint address)
 {
+  uint sz;
+  sz = PGROUNDDOWN(address);
+
+  if(allocuvm(proc->pgdir, sz, sz + PGSIZE) == 0)
+    return -1;
+
+  switchuvm(proc);
   return 0;
 }
 
