@@ -119,16 +119,18 @@ userinit(void)
 int
 growproc(int n)
 {
-  uint sz;
+  return 0;
+}
 
+// Shrink current process's memory by n bytes.
+// Return 0 on success, -1 on failure.
+int shrinkproc(int n) {
+  uint sz;
   sz = proc->sz;
-  if(n > 0){
-    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
-      return -1;
-  } else if(n < 0){
-    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
-      return -1;
-  }
+
+  if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+    return -1;
+
   proc->sz = sz;
   switchuvm(proc);
   return 0;
