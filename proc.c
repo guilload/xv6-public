@@ -73,6 +73,10 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  p->ticks = 0;
+  p->alarmticks = -1;
+  p->alarmhandler = 0;
+
   return p;
 }
 
